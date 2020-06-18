@@ -1,0 +1,5 @@
+pyTelegramBotAPI
+aiohttp
+peewee
+jinja2
+aiohttp_jinja2

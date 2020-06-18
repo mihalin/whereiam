@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Быстрый старт. Размещение интерактивной карты на странице</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://api-maps.yandex.ru/2.1/?apikey={{ token }}&lang=ru_RU" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        function init(){
+            var myMap = new ymaps.Map("map", {
+                center: [{{ init_point.x }}, {{ init_point.y }}],
+                zoom: 7
+            });
+
+            var myPolyline = new ymaps.Polyline([
+            {% for point in points %}
+                [{{ point.x }}, {{ point.y }}],
+            {% endfor %}
+            ], {
+                balloonContent: "Путь"
+            }, {
+                balloonCloseButton: false,
+                strokeColor: "#000000",
+                strokeWidth: 4,
+                strokeOpacity: 0.5
+            });
+        myMap.geoObjects
+            .add(myPolyline);
+
+        myMap.geoObjects
+        {% for point in points %}
+            .add(new ymaps.Placemark([{{ point.x }}, {{ point.y }}], {
+                balloonContent: '{{ point.comment }}'
+            }, {
+                preset: 'islands#icon',
+                iconColor: '#0095b6'
+            }))
+        {% endfor %}
+
+        }
+    </script>
+</head>
+
+<body>
+    <div id="map" style="width: 800px; height: 600px"></div>
+</body>
+
+</html>
