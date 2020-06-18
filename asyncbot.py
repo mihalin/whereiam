@@ -42,12 +42,13 @@ def start_message(message: telebot.types.Message):
 @bot.message_handler(commands=["remove_last"])
 @validate_user
 def remove_last_point(message: telebot.types.Message):
+    if not len(Point.select()):
+        bot.send_message(message.chat.id, "Нет точек")
+        return
     point = Point.select().order_by(Point.date.desc()).get()
     if point:
         point.delete_instance()
         bot.send_message(message.chat.id, "Последняя точка удалена")
-    else:
-        bot.send_message(message.chat.id, "Нет точек")
 
 
 @bot.message_handler(content_types="location")
