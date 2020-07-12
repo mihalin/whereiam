@@ -4,6 +4,7 @@ import aiohttp_jinja2
 from aiohttp import web
 from secrets import yandex
 from data import Point, default_point_factory
+from utils import split_list
 
 routes = web.RouteTableDef()
 
@@ -16,9 +17,12 @@ async def index(request):
 
     init_point = points[0] if points else default_point_factory()
 
+    lines = [line for line in split_list(points, lambda p: p.is_newline)]
+
     return {"points": points,
             "token": yandex,
-            "init_point": init_point}
+            "init_point": init_point,
+            "lines": lines}
 
 
 class WebServer:

@@ -10,13 +10,14 @@ class Point(peewee.Model):
     comment = peewee.TextField()
     x = peewee.TextField()
     y = peewee.TextField()
+    is_newline = peewee.BooleanField(default=False)
 
     class Meta:
         database = db
 
 
 def default_point_factory() -> Point:
-    return Point(x="55.76", y="37.64", date=datetime.now(), comment=str(datetime.now()))
+    return Point(x="55.76", y="37.64", date=datetime.now(), comment=str(datetime.now()), is_newline=True)
 
 
 if __name__ == '__main__':

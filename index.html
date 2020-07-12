@@ -13,20 +13,23 @@
                 zoom: 7
             });
 
-            var myPolyline = new ymaps.Polyline([
-            {% for point in points %}
-                [{{ point.x }}, {{ point.y }}],
+            {% for line in lines %}
+                myMap.geoObjects.add(
+                    new ymaps.Polyline([
+                        {% for point in line %}
+                            [{{ point.x }}, {{ point.y }}],
+                        {% endfor %}
+                        ], {
+                            balloonContent: "Путь"
+                        }, {
+                            balloonCloseButton: false,
+                            strokeColor: "#000000",
+                            strokeWidth: 4,
+                            strokeOpacity: 0.5
+                        }
+                    )
+                );
             {% endfor %}
-            ], {
-                balloonContent: "Путь"
-            }, {
-                balloonCloseButton: false,
-                strokeColor: "#000000",
-                strokeWidth: 4,
-                strokeOpacity: 0.5
-            });
-        myMap.geoObjects
-            .add(myPolyline);
 
         myMap.geoObjects
         {% for point in points %}

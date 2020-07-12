@@ -51,6 +51,19 @@ def remove_last_point(message: telebot.types.Message):
         bot.send_message(message.chat.id, "Последняя точка удалена")
 
 
+@bot.message_handler(commands=["break_line"])
+@validate_user
+def break_line(message: telebot.types.Message):
+    if not len(Point.select()):
+        bot.send_message(message.chat.id, "Нет точек")
+        return
+    point = Point.select().order_by(Point.date.desc()).get()
+    if point:
+        point.is_newline = True
+        point.save()
+        bot.send_message(message.chat.id, "Линия прервана")
+
+
 @bot.message_handler(content_types="location")
 @validate_user
 def receive_point(message: telebot.types.Message):
